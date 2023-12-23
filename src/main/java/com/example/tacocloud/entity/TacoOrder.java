@@ -1,11 +1,11 @@
 package com.example.tacocloud.entity;
 
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Digits;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 import org.hibernate.validator.constraints.CreditCardNumber;
-import org.springframework.data.annotation.Id;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.List;
 
 @Data
+@Entity
 public class TacoOrder implements Serializable {
     @NotBlank(message = "Поле доставки не должно быть пустым")
     private String deliveryName;
@@ -33,9 +34,11 @@ public class TacoOrder implements Serializable {
     private String ccCVV;
     private static final long serialVersionUID = 1L;
     @Id
+    @GeneratedValue (strategy = GenerationType.AUTO)
     private Long id;
     private Date placedAt;
 
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Taco> tacoList = new ArrayList<>();
     public void addTaco(Taco taco){
         this.tacoList.add(taco);
